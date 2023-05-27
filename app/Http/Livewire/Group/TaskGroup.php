@@ -20,7 +20,6 @@ class TaskGroup extends Component
      ***************/
     public function save()
     {
-        dd('here');
         $this->validateForm();
         $this->storeTaskGroup();
         $this->clearForm();

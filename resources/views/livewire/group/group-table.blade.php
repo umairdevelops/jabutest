@@ -9,15 +9,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="py-2 px-4 border-b border-gray-300">John Doe</td>
-                    <td class="py-2 px-4 border-b border-gray-300">25</td>
-                  </tr>
-                  <tr>
-                    <td class="py-2 px-4 border-b border-gray-300">Jane Smith</td>
-                    <td class="py-2 px-4 border-b border-gray-300">30</td>
-                  </tr>
-                  <!-- Add more rows as needed -->
+                @foreach ($taskGroups as $taskGroup)
+                    <tr>
+                        <td>{{ $taskGroup->name }}</td>
+                        <td>{{ $taskGroup->description }}</td>
+                    <hr>
+                @endforeach
                 </tbody>
               </table>
         </x-card>

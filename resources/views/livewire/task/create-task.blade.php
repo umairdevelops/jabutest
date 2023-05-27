@@ -5,64 +5,56 @@
             <form wire:submit.prevent="create">
                 <div class="grid grid-cols-12 gap-1">
                     <div class="col-span-6">
-                        <x-input label="Title" wire:model="title" placeholder="Enter title of task" />
+                        <x-input label="Title" wire:model.defer="title" placeholder="Enter title of task" />
                     </div>
                     <div class="col-span-6">
-                        <x-textarea wire:model="description" label="Description" placeholder="" class="h-10" />
+                        <x-textarea wire:model.defer="description" label="Description" placeholder="" class="h-10" />
                     </div>
                 </div>
                 <div class="grid grid-cols-12 gap-1 mt-3">
                     <div class="col-span-6">
-                        <x-select label="Task type" placeholder="Select task type" wire:model="taskType"
-                            :options="$frequencies" option-label="text" option-value="id" />
+                        <x-select label="Repetetion type" placeholder="Select Repetetion Type" wire:model="repetetionType" :options="$repetetionTypeList" option-label="text" option-value="id" />
                     </div>
-                    <div class="col-span-6 {{ $taskType == 'weekly' ? 'block' : 'hidden' }}">
-                        <x-select label="Days of week" placeholder="Select days of week" :options="$daysofweek"
-                            wire:model='selectedDays' option-label="text" option-value="id" multiselect />
-                    </div>
-                    <div class="col-span-6 {{ $taskType == 'monthly' ? 'block' : 'hidden' }}">
-                        <x-select label="Date of month" placeholder="Select date of month" :options="$daysofMonth"
-                            wire:model='selectedDate' option-label="text" option-value="id" />
-                    </div>
-                    <div class="col-span-6 {{ $taskType == 'yearly' ? 'block' : 'hidden' }}">
-                        <x-datetime-picker label="Date of year" parse-format="DD-MM-YYYY" without-tips=true
-                            without-timezone=true without-time=true placeholder="Select date of year"
-                            wire:model="selectedMonth" />
 
+                    <div class="col-span-6 {{ $repetetionType == App\Enums\RepetetionTypeEnum::weekly->value ? 'block' : 'hidden' }}">
+                        <x-select label="Days of week" placeholder="Select days of week" :options="$weekDaysList" wire:model='selectedDays' option-label="text" option-value="id" multiselect />
+                    </div>
+
+                    <div class="col-span-6 {{ $repetetionType == App\Enums\RepetetionTypeEnum::monthly->value ? 'block' : 'hidden' }}">
+                        <x-select label="Date of month" placeholder="Select date of month" :options="$monthDaysList" wire:model='selectedDate' option-label="text" option-value="id" />
+                    </div>
+
+                    <div class="col-span-6 {{ $repetetionType == App\Enums\RepetetionTypeEnum::yearly->value ? 'block' : 'hidden' }}">
+                        <x-select label="Month" placeholder="Select month" :options="$monthsList" wire:model='selectedMonth' option-label="text" option-value="id" />
+                        <x-select label="Date" placeholder="Select date" :options="$monthDaysList" wire:model='selectedDate' option-label="text" option-value="id" />
                     </div>
                 </div>
                 <div class="grid grid-cols-12 gap-1 mt-3">
                     <div class="col-span-12">
                         <label class="block text-gray-700 font-bold mb-2">
-                            Iteration type
+                            Task Type
                         </label>
-                        <x-radio id="right-label" md label="Date A to B" value="dateRange" wire:model="iterationType" />
+                        <x-radio id="right-label" md label="Date A to B" value="{{App\Enums\TaskTypeEnum::dates->value}}" wire:model="taskType" />
                         <div class="h-2"></div>
-                        <x-radio id="right-label" md label="Number of Iterations" value="numIterations"
-                            wire:model="iterationType" />
+                        <x-radio id="right-label" md label="Number of Iterations" value="{{App\Enums\TaskTypeEnum::repetetions->value}}" wire:model="taskType" />
                     </div>
                 </div>
                 <div class="grid grid-cols-12 gap-1 mt-3">
-                    <div class="col-span-6 {{ $iterationType == 'dateRange' ? 'block' : 'hidden' }}">
+                    <div class="col-span-6 {{ $taskType == App\Enums\TaskTypeEnum::dates->value ? 'block' : 'hidden' }}">
                         <div class="grid grid-cols-12 ">
                             <div class="col-span-6">
-                                <x-datetime-picker label="Start Date" parse-format="DD-MM-YYYY" without-tips=true
-                                    without-timezone=true without-time=true placeholder="Select start date"
-                                    wire:model="startDate" class="w-full" />
+                                <x-datetime-picker label="Start Date" parse-format="DD-MM-YYYY" without-tips=true without-timezone=true without-time=true placeholder="Select start date" wire:model="startDate" class="w-full" />
                             </div>
                             <div class="col-span-6 ml-2">
-                                <x-datetime-picker label="End Date" parse-format="DD-MM-YYYY" without-tips=true
-                                    without-timezone=true without-time=true placeholder="Select end date"
-                                    wire:model="endDate" class="w-full" />
+                                <x-datetime-picker label="End Date" parse-format="DD-MM-YYYY" without-tips=true without-timezone=true without-time=true placeholder="Select end date" wire:model="endDate" class="w-full" />
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-6 {{ $iterationType == 'numIterations' ? 'block' : 'hidden' }}">
+                    <div class="col-span-6 {{ $taskType == App\Enums\TaskTypeEnum::repetetions->value ? 'block' : 'hidden' }}">
                         <x-inputs.number label="No of iterations" wire:model='noOfIterations' />
                     </div>
                     <div class="col-span-6">
-                        <x-select label="Task Group" placeholder="Task group" wire:model="task_group_id"
-                            :options="$task_groups" option-label="name" option-value="id" />
+                        <x-select label="Task Group" placeholder="Task group" wire:model="group" :options="$groupsList" option-label="name" option-value="id" />
                     </div>
                 </div>
                 <x-slot name="footer">
