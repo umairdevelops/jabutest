@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire\Task;
 
-use App\Enums\RepetetionTypeEnum;
-use App\Enums\TaskTypeEnum;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
