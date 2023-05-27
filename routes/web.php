@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Livewire\Group\GroupTable;
 use App\Http\Livewire\Group\TaskGroup;
 use App\Http\Livewire\Task\CreateTask;
 use App\Http\Livewire\Task\TaskList;
+use App\Http\Livewire\Login\Login;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +19,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', TaskGroup::class)->name('/');
-Route::get('/groups', GroupTable::class)->name('groups');
-Route::get('/create/task', CreateTask::class)->name('createTask');
-Route::get('/tasks', TaskList::class)->name('tasks');
+Route::get('/login', Login::class)->name('login');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', TaskGroup::class)->name('/');
+    Route::get('/groups', GroupTable::class)->name('groups');
+    Route::get('/create/task', CreateTask::class)->name('createTask');
+    Route::get('/tasks', TaskList::class)->name('tasks');
+});
