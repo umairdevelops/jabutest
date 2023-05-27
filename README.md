@@ -61,6 +61,7 @@ Project Code Features:
 - '/tasks': This route is protected and requires authentication. It renders the `TaskList` component, displaying different task lists based on the active tab.
 
 10. **Entity Relationship Diagram:**
+
 ![Entity Relationship Diagram](https://github.com/umairdevelops/jabutest/assets/69592870/e918beb4-d21f-4715-a12e-7caa2a4a712b)
 
 
