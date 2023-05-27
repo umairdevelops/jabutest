@@ -1,66 +1,77 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Project Code Features:
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+1. **TaskGroup Component (TaskGroup.php):**
+- This component is used for managing task groups.
+- It is responsible for creating and storing new task groups.
+- It defines public properties to hold the form data for the task group, such as 'name' and 'description'.
+- It implements wire events like `save()` and `cancel()` to handle form submission and resetting.
+- The `render()` method returns the view associated with this component.
 
-## About Laravel
+2. **GroupTable Component (GroupTable.php):**
+- This component displays a table of task groups.
+- It retrieves all task groups from the database and assigns them to the `$taskGroups` property.
+- The `render()` method returns the view associated with this component.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+3. **Login Component (Login.php):**
+- This component handles the login functionality.
+- It defines public properties for 'email' and 'password' fields.
+- It includes validation rules for these properties.
+- The `login()` method is triggered when the form is submitted.
+- It validates the form inputs, attempts authentication, and redirects on successful login.
+- The `render()` method returns the view associated with this component.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+4. **CreateTask Component (CreateTask.php):**
+- This component allows users to create new tasks.
+- It initializes various properties for form fields, such as 'repetetionTypeList', 'weekDaysList', 'monthsList', 'monthDaysList', and 'groupsList'.
+- The `mount()` method sets the default values for some properties.
+- It defines a `save()` method to handle form submission and create a new task in the database based on the provided inputs.
+- The component includes custom validation logic in the `customValidate()` method.
+- The `resetForm()` method resets all form fields to their default values.
+- The `render()` method returns the view associated with this component.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+5. **TaskList Component (TaskList.php):**
+- This component displays a list of tasks based on different criteria.
+- It defines properties for task lists categorized by 'activeTab', 'todayTasks', 'tomorrowTasks', 'nextWeekTasks', 'nearFutureTasks', and 'futureTasks'.
+- The `mount()` method retrieves tasks from the database based on different time frames and assigns them to the respective properties.
+- It defines methods for marking tasks as complete or incomplete, which update the corresponding task in the database.
+- The `render()` method returns the view associated with this component, passing the relevant task list based on the active tab.
 
-## Learning Laravel
+6. **Web Routes (web.php):**
+- This file contains the route definitions for the web application.
+- The '/login' route maps to the `Login` component.
+- The '/logout' route is associated with the 'logout' method of the `AuthController`.
+- Routes inside the 'auth' middleware group require authentication to access.
+- The '/' route maps to the `TaskGroup` component.
+- The '/groups' route maps to the `GroupTable` component.
+- The '/create/task' route maps to the `CreateTask` component.
+- The '/tasks' route maps to the `TaskList` component.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+7. **TaskManager Trait (TaskManager.php):**
+- This trait provides task management functionality.
+- It defines static methods like 'today()', 'tomorrow()', 'nextWeek()', 'nearFuture()', and 'future()' that return collections of tasks based on different time frames.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+8. **Public Routes:**
+- '/login': This route is public and accessible without authentication. It renders the login form using the `Login` component.
+- '/logout': This route is public and accessible without authentication. It triggers the 'logout' method of the `AuthController`.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+9. **Protected Routes (Middleware Auth):**
+- '/': This route is protected and requires authentication. It renders the `TaskGroup` component, which manages task groups.
+- '/groups': This route is protected and requires authentication. It renders the `GroupTable` component, which displays a table of task groups.
+- '/create/task': This route is protected and requires authentication. It renders the `CreateTask` component, allowing users to create new tasks.
+- '/tasks': This route is protected and requires authentication. It renders the `TaskList` component, displaying different task lists based on the active tab.
 
-## Laravel Sponsors
+10. **Key Features:**
+- User authentication and login functionality.
+- CRUD operations for task groups.
+- Creation of new tasks with various options for repetition and date selection.
+- Displaying and managing tasks based on different time frames.
+- Relationship between tasks, task groups, and repetitions.
+- Form validation and error handling.
+- Integration with Laravel Eloquent ORM for database operations.
+- Component-based architecture using Livewire for interactive UI.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+11. **Live Testing:**
+- Open the following URL.
+- Email/Username : `user@mail.com`
+- Password : `password`
+- Use the Task Manager with ❤️ Love
