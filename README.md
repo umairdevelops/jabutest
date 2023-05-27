@@ -76,7 +76,7 @@ Project Code Features:
 - Component-based architecture using Livewire for interactive UI.
 
 12. **Live Testing:**
-- Open the following URL :  https://umairs.buyebazar.com/
+- Open the following URL :  https://umair.buyebazar.com
 - Email/Username : `user@mail.com`
 - Password : `password`
 - Use the Task Manager with ❤️ Love
