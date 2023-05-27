@@ -11,9 +11,9 @@
                 <tbody>
                 @foreach ($taskGroups as $taskGroup)
                     <tr>
-                        <td>{{ $taskGroup->name }}</td>
-                        <td>{{ $taskGroup->description }}</td>
-                    <hr>
+                        <td class="py-2 px-4 border-b border-gray-300">{{ $taskGroup->name }}</td>
+                        <td class="py-2 px-4 border-b border-gray-300">{{ $taskGroup->description }}</td>
+                    </tr>
                 @endforeach
                 </tbody>
               </table>

@@ -17,7 +17,6 @@ class TaskList extends Component
 
     public function mount()
     {
-        Auth::loginUsingId(1);
         $this->todayTasks = Task::today()->toArray();
         $this->tomorrowTasks = Task::tomorrow()->toArray();
         $this->nextWeekTasks = Task::nextWeek()->toArray();

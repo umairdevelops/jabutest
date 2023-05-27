@@ -18,10 +18,6 @@
 
 <body>
     <div class="flex min-h-screen flex-row bg-blue-100 text-gray-800">
-        <aside class="sidebar w-64 -translate-x-full transform bg-white p-4 transition-transform duration-150 ease-in md:translate-x-0 md:shadow-md">
-            
-            <div class="my-4"></div>
-        </aside>
         <main class="main -ml-48 flex flex-grow flex-col py-3 transition-all duration-150 ease-in md:ml-0">
             {{$slot}}
         </main>

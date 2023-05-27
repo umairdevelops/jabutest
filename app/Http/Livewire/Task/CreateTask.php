@@ -51,7 +51,6 @@ class CreateTask extends Component
 
     public function mount()
     {
-        Auth::loginUsingId(1);
         $this->repetetionType = RepetetionTypeEnum::daily->value;
         $this->taskType = TaskTypeEnum::dates->value;
         

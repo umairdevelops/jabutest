@@ -3,19 +3,19 @@
         <x-card title="Tasks List">
             <ul class="flex mb-4">
                 <li class="mr-1">
-                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'today' ? 'bg-gray-400' : '' }}" wire:click="$set('activeTab', 'today')">Today</button>
+                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'today' ? 'bg-blue-600 text-white' : '' }}" wire:click="$set('activeTab', 'today')">Today</button>
                 </li>
                 <li class="mr-1">
-                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'tomorrow' ? 'bg-gray-400' : '' }}" wire:click="$set('activeTab', 'tomorrow')">Tomorrow</button>
+                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'tomorrow' ? 'bg-blue-600 text-white' : '' }}" wire:click="$set('activeTab', 'tomorrow')">Tomorrow</button>
                 </li>
                 <li class="mr-1">
-                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'nextWeek' ? 'bg-gray-400' : '' }}" wire:click="$set('activeTab', 'nextWeek')">Next Week</button>
+                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'nextWeek' ? 'bg-blue-600 text-white' : '' }}" wire:click="$set('activeTab', 'nextWeek')">Next Week</button>
                 </li>
                 <li class="mr-1">
-                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'nearFuture' ? 'bg-gray-400' : '' }}" wire:click="$set('activeTab', 'nearFuture')">Near Future</button>
+                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'nearFuture' ? 'bg-blue-600 text-white' : '' }}" wire:click="$set('activeTab', 'nearFuture')">Near Future</button>
                 </li>
                 <li>
-                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'future' ? 'bg-gray-400' : '' }}" wire:click="$set('activeTab', 'future')">Future</button>
+                    <button class="px-4 py-2 bg-gray-300 rounded-t-lg {{ $activeTab === 'future' ? 'bg-blue-600 text-white' : '' }}" wire:click="$set('activeTab', 'future')">Future</button>
                 </li>
             </ul>
 
