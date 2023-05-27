@@ -10,11 +10,21 @@ use Livewire\Component;
 
 class TaskList extends Component
 {
-    public $tasks;
+    public $activeTab = 'today';
+    public $todayTasks = [];
+    public $tomorrowTasks = [];
+    public $nextWeekTasks = [];
+    public $nearFutureTasks = [];
+    public $futureTasks = [];
 
     public function mount()
     {
         Auth::loginUsingId(1);
+        $this->todayTasks = Task::today()->toArray();
+        $this->tomorrowTasks = Task::tomorrow()->toArray();
+        $this->nextWeekTasks = Task::nextWeek()->toArray();
+        $this->nearFutureTasks = Task::nearFuture()->toArray();
+        $this->futureTasks = Task::future()->toArray();
     }
 
     public function markIncomplete($taskId)
@@ -22,6 +32,7 @@ class TaskList extends Component
         Task::find($taskId)->update([
             'completed' => false
         ]);
+        $this->mount();
     }
 
     public function markComplete($taskId)
@@ -29,17 +40,27 @@ class TaskList extends Component
         Task::find($taskId)->update([
             'completed' => true
         ]);
+        $this->mount();
     }
 
     public function render()
     {
-        $today = Task::today()->toArray();
-        $tomorrow = Task::tomorrow()->toArray();
-        $nextWeek = Task::nextWeek()->toArray();
-        $nearFuture = Task::nearFuture()->toArray();
-        $future = Task::future()->toArray();
+        $tasks = [];
 
-        $this->tasks = $today;
-        return view('livewire.task.task-list');
+        if ($this->activeTab === 'today') {
+            $tasks = $this->todayTasks;
+        } elseif ($this->activeTab === 'tomorrow') {
+            $tasks = $this->tomorrowTasks;
+        } elseif ($this->activeTab === 'nextWeek') {
+            $tasks = $this->nextWeekTasks;
+        } elseif ($this->activeTab === 'nearFuture') {
+            $tasks = $this->nearFutureTasks;
+        } elseif ($this->activeTab === 'future') {
+            $tasks = $this->futureTasks;
+        }
+    
+        return view('livewire.task.task-list', [
+            'tasks' => $tasks,
+        ]);
     }
 }

@@ -40,8 +40,8 @@ class CreateTask extends Component
     public $group =  null;
     public $title =  "";
     public $description = "";
-    public $repetetionType = RepetetionTypeEnum::daily->value;
-    public $taskType = TaskTypeEnum::dates->value;
+    public $repetetionType;
+    public $taskType;
     public $noOfIterations = 1;
     public $selectedDays = [];
     public $selectedMonth;
@@ -52,6 +52,8 @@ class CreateTask extends Component
     public function mount()
     {
         Auth::loginUsingId(1);
+        $this->repetetionType = RepetetionTypeEnum::daily->value;
+        $this->taskType = TaskTypeEnum::dates->value;
         
         for ($i = 1; $i <= 12; $i++) {
             $this->monthsList[] = ['id' => $i, 'text' => $i];
