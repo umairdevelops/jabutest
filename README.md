@@ -60,7 +60,11 @@ Project Code Features:
 - '/create/task': This route is protected and requires authentication. It renders the `CreateTask` component, allowing users to create new tasks.
 - '/tasks': This route is protected and requires authentication. It renders the `TaskList` component, displaying different task lists based on the active tab.
 
-10. **Key Features:**
+10. **Entity Relationship Diagram:**
+![Entity Relationship Diagram](https://github.com/umairdevelops/jabutest/assets/69592870/e918beb4-d21f-4715-a12e-7caa2a4a712b)
+
+
+11. **Key Features:**
 - User authentication and login functionality.
 - CRUD operations for task groups.
 - Creation of new tasks with various options for repetition and date selection.
@@ -70,7 +74,7 @@ Project Code Features:
 - Integration with Laravel Eloquent ORM for database operations.
 - Component-based architecture using Livewire for interactive UI.
 
-11. **Live Testing:**
+12. **Live Testing:**
 - Open the following URL.
 - Email/Username : `user@mail.com`
 - Password : `password`
