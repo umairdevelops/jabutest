@@ -128,6 +128,8 @@ class CreateTask extends Component
                 'noOfIterations' => 'required|integer|min:1',
             ];
         }
+
+        $this->validate();
     }
 
     private function resetForm()
