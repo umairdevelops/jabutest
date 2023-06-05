@@ -12,13 +12,14 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <wireui:scripts />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/js/app.js', 'resources/js/vendor/webauthn/webauthn.js'])
     @livewireStyles
 </head>
 
 <body>
     <div class="flex min-h-screen flex-row bg-blue-100 text-gray-800">
-        <aside class="sidebar w-64 -translate-x-full transform bg-white p-4 transition-transform duration-150 ease-in md:translate-x-0 md:shadow-md">
+        <aside
+            class="sidebar w-64 -translate-x-full transform bg-white p-4 transition-transform duration-150 ease-in md:translate-x-0 md:shadow-md">
             @include('layouts.sidebar')
             <div class="my-4"></div>
         </aside>
@@ -28,7 +29,9 @@
     </div>
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @stack('scripts')
     @livewireScripts
+
 </body>
 
 </html>

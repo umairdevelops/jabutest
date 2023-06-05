@@ -12,7 +12,8 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <wireui:scripts />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/js/app.js', 'resources/js/vendor/webauthn/webauthn.js'])
+
     @livewireStyles
 </head>
 
@@ -24,6 +25,8 @@
     </div>
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @stack('scripts')
+
     @livewireScripts
 </body>
 

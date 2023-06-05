@@ -1,33 +1,33 @@
-<div class=" flex items-center justify-center h-screen">
-    
-    <div class="w-1/2">
-        <x-card title="Create Task Group" >
-            <x-errors class="mb-4" />
-            <div class="col-span-1 sm:col-span-2 gap-6">
-                <x-input label="Group Name" placeholder="Group Name" wire:model.defer="group.name" />
-            </div>
-            <div class="col-span-1 sm:col-span-2 gap-6 mt-3">
-                <x-textarea label="Description" placeholder="Enter Description" wire:model.defer="group.description" />
-            </div>
-        
-            <x-slot name="footer">
-                <div class="flex items-center gap-x-3 justify-end">
-                    <x-button wire:click="cancel" label="Cancel" flat />
-                    <x-button wire:click="save" label="Save" spinner="save" primary />
-                </div>
-            </x-slot>
-        </x-card>
-    </div>
+/**
+ * MIT License
+ *
+ * Copyright (c) Italo Israel Baeza Cabrera
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
-    <form id="register-form">
-        <button type="submit" value="Register authenticator">Register Yourself </button>
-    </form>
-
-<!-- Login users -->
-@push('scripts')
-<script>
-    class WebAuthn {
- 
+class WebAuthn {
+    /**
+     * Routes for WebAuthn assertion (login) and attestation (register).
+     *
+     * @type {{registerOptions: string, register: string, loginOptions: string, login: string, }}
+     */
     #routes = {
         registerOptions: "webauthn/register/options",
         register: "webauthn/register",
@@ -35,14 +35,34 @@
         login: "webauthn/login",
     }
 
+    /**
+     * Headers to use in ALL requests done.
+     *
+     * @type {{Accept: string, "Content-Type": string, "X-Requested-With": string}}
+     */
     #headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest"
     };
 
+    /**
+     * If set to true, the credentials option will be set to 'include' on all fetch calls,
+     * or else it will use the default 'same-origin'. Use this if the backend is not the
+     * same origin as the client or the XSRF protection will break without the session.
+     *
+     * @type {boolean}
+     */
     #includeCredentials = false
 
+    /**
+     * Create a new WebAuthn instance.
+     *
+     * @param routes {{registerOptions: string, register: string, loginOptions: string, login: string}}
+     * @param headers {{string}}
+     * @param includeCredentials {boolean}
+     * @param xcsrfToken {string|null} Either a csrf token (40 chars) or xsrfToken (224 chars)
+     */
     constructor(routes = {}, headers = {}, includeCredentials = false, xcsrfToken = null) {
         Object.assign(this.#routes, routes);
         Object.assign(this.#headers, headers);
@@ -77,6 +97,12 @@
         }
     }
 
+    /**
+     * Returns the CSRF token if it exists as a form input tag.
+     *
+     * @returns string
+     * @throws TypeError
+     */
     static get #firstInputWithCsrfToken() {
         // First, try finding an CSRF Token in the head.
         let token = Array.from(document.head.getElementsByTagName("meta"))
@@ -97,13 +123,38 @@
         return null;
     }
 
+    /**
+     * Returns the value of the XSRF token if it exists in a cookie.
+     *
+     * Inspired by https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie#example_2_get_a_sample_cookie_named_test2
+     *
+     * @returns {?string}
+     */
      static get #XsrfToken() {
         const cookie = document.cookie.split(";").find((row) => /^\s*(X-)?[XC]SRF-TOKEN\s*=/.test(row));
-
+        // We must remove all '%3D' from the end of the string.
+        // Background:
+        // The actual binary value of the CSFR value is encoded in Base64.
+        // If the length of original, binary value is not a multiple of 3 bytes,
+        // the encoding gets padded with `=` on the right; i.e. there might be
+        // zero, one or two `=` at the end of the encoded value.
+        // If the value is sent from the server to the client as part of a cookie,
+        // the `=` character is URL-encoded as `%3D`, because `=` is already used
+        // to separate a cookie key from its value.
+        // When we send back the value to the server as part of an AJAX request,
+        // Laravel expects an unpadded value.
+        // Hence, we must remove the `%3D`.
         return cookie ? cookie.split("=")[1].trim().replaceAll("%3D", "") : null;
     };
 
- 
+    /**
+     * Returns a fetch promise to resolve later.
+     *
+     * @param data {Object}
+     * @param route {string}
+     * @param headers {{string}}
+     * @returns {Promise<Response>}
+     */
     #fetch(data, route, headers = {}) {
         const url = new URL(route, window.location.origin).href;
         
@@ -116,6 +167,12 @@
         });
     }
 
+    /**
+     * Decodes a BASE64 URL string into a normal string.
+     *
+     * @param input {string}
+     * @returns {string|Iterable}
+     */
     static #base64UrlDecode(input) {
         input = input.replace(/-/g, "+").replace(/_/g, "/");
 
@@ -132,18 +189,35 @@
         return atob(input);
     }
 
-
+    /**
+     * Transform a string into Uint8Array instance.
+     *
+     * @param input {string}
+     * @param useAtob {boolean}
+     * @returns {Uint8Array}
+     */
     static #uint8Array(input, useAtob = false) {
         return Uint8Array.from(
             useAtob ? atob(input) : WebAuthn.#base64UrlDecode(input), c => c.charCodeAt(0)
         );
     }
 
+    /**
+     * Encodes an array of bytes to a BASE64 URL string
+     *
+     * @param arrayBuffer {ArrayBuffer|Uint8Array}
+     * @returns {string}
+     */
     static #arrayToBase64String(arrayBuffer) {
         return btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
     }
 
-
+    /**
+     * Parses the Public Key Options received from the Server for the browser.
+     *
+     * @param publicKey {Object}
+     * @returns {Object}
+     */
     #parseIncomingServerOptions(publicKey) {
         console.debug(publicKey);
 
@@ -172,7 +246,12 @@
         return publicKey;
     }
 
-
+    /**
+     * Parses the outgoing credentials from the browser to the server.
+     *
+     * @param credentials {Credential|PublicKeyCredential}
+     * @return {{response: {string}, rawId: string, id: string, type: string}}
+     */
     #parseOutgoingCredentials(credentials) {
         let parseCredentials = {
             id: credentials.id,
@@ -194,6 +273,15 @@
         return parseCredentials;
     }
 
+    /**
+     * Handles the response from the Server.
+     *
+     * Throws the entire response if is not OK (HTTP 2XX).
+     *
+     * @param response {Response}
+     * @returns Promise<JSON|ReadableStream>
+     * @throws Response
+     */
     static #handleResponse(response) {
         if (!response.ok) {
             throw response;
@@ -210,6 +298,15 @@
         });
     }
 
+    /**
+     * Register the user credentials from the browser/device.
+     *
+     * You can add request input if you are planning to register a user with WebAuthn from scratch.
+     *
+     * @param request {{string}}
+     * @param response {{string}}
+     * @returns Promise<JSON|ReadableStream>
+     */
     async register(request = {}, response = {}) {
         const optionsResponse = await this.#fetch(request, this.#routes.registerOptions);
         const json = await optionsResponse.json();
@@ -223,7 +320,15 @@
         return await this.#fetch(publicKeyCredential, this.#routes.register).then(WebAuthn.#handleResponse);
     }
 
-
+    /**
+     * Log in a user with his credentials.
+     *
+     * If no credentials are given, the app may return a blank assertion for userless login.
+     *
+     * @param request {{string}}
+     * @param response {{string}}
+     * @returns Promise<JSON|ReadableStream>
+     */
     async login(request = {}, response = {}) {
         const optionsResponse = await this.#fetch(request, this.#routes.loginOptions);
         const json = await optionsResponse.json();
@@ -238,23 +343,21 @@
         return await this.#fetch(publicKeyCredential, this.#routes.login, response).then(WebAuthn.#handleResponse);
     }
 
+    /**
+     * Checks if the browser supports WebAuthn.
+     *
+     * @returns {boolean}
+     */
     static supportsWebAuthn() {
         return typeof PublicKeyCredential != "undefined";
     }
 
+    /**
+     * Checks if the browser doesn't support WebAuthn.
+     *
+     * @returns {boolean}
+     */
     static doesntSupportWebAuthn() {
         return !this.supportsWebAuthn();
     }
 }
-const register = event => {
-        event.preventDefault()
-        
-        new WebAuthn().register()
-          .then(response => alert('Registration successful!'))
-          .catch(error => alert('Something went wrong, try again!'))
-    }
-
-    document.getElementById('register-form').addEventListener('submit', register)
-</script>
-@endpush
-</div>

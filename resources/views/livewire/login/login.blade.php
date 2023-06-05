@@ -13,7 +13,7 @@
 
             <x-slot name="footer">
                 <div class="flex items-center gap-x-3 justify-end">
-                    <x-button  right-icon="arrow-right" spinner="login" wire:click="login" label="Sign in" primary />
+                    <x-button right-icon="arrow-right" spinner="login" wire:click="login" label="Sign in" primary />
                 </div>
             </x-slot>
         </x-card>

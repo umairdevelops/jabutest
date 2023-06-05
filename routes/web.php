@@ -6,7 +6,9 @@ use App\Http\Livewire\Group\TaskGroup;
 use App\Http\Livewire\Task\CreateTask;
 use App\Http\Livewire\Task\TaskList;
 use App\Http\Livewire\Login\Login;
+use App\Http\Livewire\Register\Register;
 use Illuminate\Support\Facades\Route;
+use Laragear\WebAuthn\WebAuthn;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/login', Login::class)->name('login');
+Route::get('/register', Register::class)->name('register');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
@@ -29,3 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/create/task', CreateTask::class)->name('createTask');
     Route::get('/tasks', TaskList::class)->name('tasks');
 });
+
+
+WebAuthn::routes();

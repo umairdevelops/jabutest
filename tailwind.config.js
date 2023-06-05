@@ -6,7 +6,8 @@ module.exports = {
     './vendor/wireui/wireui/ts/**/*.ts',
     './vendor/wireui/wireui/src/View/**/*.php'],
     presets: [
-        require('./vendor/wireui/wireui/tailwind.config.js')
+        require('./vendor/wireui/wireui/tailwind.config.js'),
+        require('./resources/js/vendor/webauthn/webauthn.js')
     ],
     theme: {
         extend: {
